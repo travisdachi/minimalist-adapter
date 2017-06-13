@@ -48,4 +48,5 @@ publish {
     publishVersion = '0.0.0'
     desc = 'Another attempt to reduce adapter\'s boilerplate code.'
     website = 'https://github.com/travisp101/minimalist-adapter'
+    licences = ['MIT']
 }
