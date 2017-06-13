@@ -9,9 +9,11 @@ open class MinimalViewHolder<T : Any>(itemView: View) : RecyclerView.ViewHolder(
     var item: T by Delegates.notNull<T>()
 }
 
+typealias MinimalOnClickListener<VH> = (holder: VH, view: View) -> Unit
+
 abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
         list: List<T> = emptyList(),
-        open val onItemClick: ((T) -> Unit)? = null,
+        open val minimalOnClickListener: MinimalOnClickListener<VH>? = null,
         open val diffCalculator: DiffCalculator<T>? = null
 ) : RecyclerView.Adapter<VH>() {
 
@@ -25,9 +27,9 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         return onCreateMinimalViewHolder(parent, viewType).apply {
-            onItemClick?.let { onClick ->
+            minimalOnClickListener?.let { onClick ->
                 itemView.setOnClickListener {
-                    onClick.invoke(item)
+                    onClick(this, it)
                 }
             }
         }

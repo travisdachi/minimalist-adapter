@@ -1,2 +1,2 @@
-#Minimalist Adapter
-Minimal-List-Adapter get it?
+# Minimalist Adapter
+Minimal-List-Adapter, get it?
