@@ -1,4 +1,4 @@
-package com.github.travisp101.minimalistadapter
+package com.github.travisp101.minimalistadapter.recyclerview
 
 import android.support.v7.util.DiffUtil
 

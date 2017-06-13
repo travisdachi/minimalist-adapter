@@ -1,4 +1,4 @@
-package com.github.travisp101.minimalistadapter
+package com.github.travisp101.minimalistadapter.recyclerview
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
@@ -47,12 +47,12 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
     abstract fun onBindMinimalViewHolder(holder: VH, position: Int, item: T)
 
     companion object {
-        fun <T : Any, VH : MinimalViewHolder<T>> create(
-                onCreate: (parent: ViewGroup, viewType: Int) -> VH,
-                onBind: (holder: VH, position: Int, item: T) -> Unit,
+        inline fun <T : Any, VH : MinimalViewHolder<T>> create(
+                crossinline onCreate: (parent: ViewGroup, viewType: Int) -> VH,
+                crossinline onBind: (holder: VH, position: Int, item: T) -> Unit,
                 list: List<T> = emptyList(),
-                minimalOnClickListener: MinimalOnClickListener<VH>? = null,
-                diffCalculator: DiffCalculator<T>? = null
+                crossinline minimalOnClickListener: MinimalOnClickListener<VH>? = null,
+                diffCalculator: DiffCalculator<T>? = SimpleDiffCalculator()
         ): MinimalListAdapter<T, VH> = object : MinimalListAdapter<T, VH>(list, minimalOnClickListener, diffCalculator) {
             override fun onCreateMinimalViewHolder(parent: ViewGroup, viewType: Int): VH = onCreate(parent, viewType)
 
