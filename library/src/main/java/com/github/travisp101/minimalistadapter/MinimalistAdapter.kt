@@ -46,4 +46,17 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
 
     abstract fun onBindMinimalViewHolder(holder: VH, position: Int, item: T)
 
+    companion object {
+        fun <T : Any, VH : MinimalViewHolder<T>> create(
+                onCreate: (parent: ViewGroup, viewType: Int) -> VH,
+                onBind: (holder: VH, position: Int, item: T) -> Unit,
+                list: List<T> = emptyList(),
+                minimalOnClickListener: MinimalOnClickListener<VH>? = null,
+                diffCalculator: DiffCalculator<T>? = null
+        ): MinimalListAdapter<T, VH> = object : MinimalListAdapter<T, VH>(list, minimalOnClickListener, diffCalculator) {
+            override fun onCreateMinimalViewHolder(parent: ViewGroup, viewType: Int): VH = onCreate(parent, viewType)
+
+            override fun onBindMinimalViewHolder(holder: VH, position: Int, item: T) = onBind(holder, position, item)
+        }
+    }
 }
