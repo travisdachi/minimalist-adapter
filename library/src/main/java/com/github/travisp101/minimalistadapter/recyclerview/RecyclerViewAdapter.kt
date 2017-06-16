@@ -12,9 +12,7 @@ open class MinimalViewHolder<T : Any>(itemView: View) : RecyclerView.ViewHolder(
 typealias MinimalOnClickListener<VH> = (holder: VH, view: View) -> Unit
 
 abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
-        list: List<T> = emptyList(),
-        open val minimalOnClickListener: MinimalOnClickListener<VH>? = null,
-        open val diffCalculator: DiffCalculator<T>? = null
+        list: List<T> = emptyList()
 ) : RecyclerView.Adapter<VH>() {
 
     open var list: List<T> by Delegates.observable(list) { _, oldValue, newValue ->
@@ -23,23 +21,24 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
         else notifyDataSetChanged()
     }
 
+    open val minimalOnClickListener: MinimalOnClickListener<VH>? = null
+    open val diffCalculator: DiffCalculator<T>? = null
+
     override fun getItemCount(): Int = list.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
-        return onCreateMinimalViewHolder(parent, viewType).apply {
-            minimalOnClickListener?.let { onClick ->
-                itemView.setOnClickListener {
-                    onClick(this, it)
-                }
-            }
+        val vh = onCreateMinimalViewHolder(parent, viewType)
+        val onClick = minimalOnClickListener
+        if (onClick != null) {
+            vh.itemView.setOnClickListener { onClick.invoke(vh, it) }
         }
+        return vh
     }
 
     override fun onBindViewHolder(holder: VH, position: Int) {
-        list[position].let {
-            holder.item = it
-            onBindMinimalViewHolder(holder, position, it)
-        }
+        val item = list[position]
+        holder.item = item
+        onBindMinimalViewHolder(holder, position, item)
     }
 
     abstract fun onCreateMinimalViewHolder(parent: ViewGroup, viewType: Int): VH
@@ -53,7 +52,12 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
                 list: List<T> = emptyList(),
                 crossinline minimalOnClickListener: MinimalOnClickListener<VH>? = null,
                 diffCalculator: DiffCalculator<T>? = SimpleDiffCalculator()
-        ): MinimalListAdapter<T, VH> = object : MinimalListAdapter<T, VH>(list, minimalOnClickListener, diffCalculator) {
+        ): MinimalListAdapter<T, VH> = object : MinimalListAdapter<T, VH>(list) {
+
+            override val minimalOnClickListener: MinimalOnClickListener<VH>? = minimalOnClickListener
+
+            override val diffCalculator: DiffCalculator<T>? = diffCalculator
+
             override fun onCreateMinimalViewHolder(parent: ViewGroup, viewType: Int): VH = onCreate(parent, viewType)
 
             override fun onBindMinimalViewHolder(holder: VH, position: Int, item: T) = onBind(holder, position, item)
