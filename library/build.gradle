@@ -45,7 +45,7 @@ buildscript {
 publish {
     groupId = 'com.github.travisp101'
     artifactId = 'minimalist-adapter'
-    publishVersion = '0.0.0'
+    publishVersion = '0.1.0'
     desc = 'Another attempt to reduce adapter\'s boilerplate code.'
     website = 'https://github.com/travisp101/minimalist-adapter'
     licences = ['MIT']

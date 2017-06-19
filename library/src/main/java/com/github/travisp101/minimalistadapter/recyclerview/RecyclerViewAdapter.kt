@@ -9,7 +9,7 @@ open class MinimalViewHolder<T : Any>(itemView: View) : RecyclerView.ViewHolder(
     var item: T by Delegates.notNull<T>()
 }
 
-typealias MinimalOnClickListener<VH> = (holder: VH, view: View) -> Unit
+typealias MinimalOnClickListener<VH> = (view: View, holder: VH) -> Unit
 
 abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
         list: List<T> = emptyList()
@@ -29,9 +29,7 @@ abstract class MinimalListAdapter<T : Any, VH : MinimalViewHolder<T>>(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VH {
         val vh = onCreateMinimalViewHolder(parent, viewType)
         val onClick = minimalOnClickListener
-        if (onClick != null) {
-            vh.itemView.setOnClickListener { onClick.invoke(vh, it) }
-        }
+        if (onClick != null) vh.itemView.setOnClickListener { onClick.invoke(it, vh) }
         return vh
     }
 

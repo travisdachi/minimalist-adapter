@@ -21,8 +21,8 @@ abstract class MinimalPagerAdapter<T>(list: List<T> = emptyList()) : PagerAdapte
         }
     }
 
-    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
-        container.removeView(`object` as View)
+    override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
+        container.removeView(any as View)
     }
 
     abstract fun getMinimalView(container: ViewGroup, position: Int, item: T): View
